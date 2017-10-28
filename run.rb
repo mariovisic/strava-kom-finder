@@ -34,7 +34,8 @@ def colorize_grade(grade)
     :red
   end
 
-  ColorizedString.new("#{grade}%").public_send(color)
+  leading_space = grade > 0 ? ' ' : ''
+  ColorizedString.new("#{leading_space}#{grade}%").public_send(color)
 end
 
 
@@ -53,6 +54,11 @@ def colorize_speed(speed)
   ColorizedString.new("#{speed} km/h").public_send(color)
 end
 
+
+puts "#{'Name'.ljust(30)} | #{'Distance'.ljust(10)} | #{'Grade'.ljust(10)} | #{'Your Speed'.ljust(10)} | #{'KOM Speed'.ljust(10)}"
+puts "-" * 120
+
+
 full_activity['segment_efforts'].each do |segment_effort|
   segment_elapsed_time = segment_effort['elapsed_time']
   segment_distance = (segment_effort['segment']['distance'] / 1000.0).round(1)
@@ -65,7 +71,5 @@ full_activity['segment_efforts'].each do |segment_effort|
   your_speed = (segment_distance / segment_elapsed_time * 3600).round(1)
   kom_speed = (segment_distance / segment_kom_elapsed_time * 3600).round(1)
 
-  puts "#{segment_name} - #{colorize_distance(segment_distance)} #{colorize_grade(segment_average_grade)}"
-  puts "Your Speed: #{colorize_speed(your_speed)} KOM Speed: #{colorize_speed(kom_speed)}"
-  puts
+  puts "#{segment_name[0,30].ljust(30)} | #{colorize_distance(segment_distance).ljust(10 + 14)} | #{colorize_grade(segment_average_grade).ljust(10 + 14)} | #{colorize_speed(your_speed).ljust(10 + 14)} | #{colorize_speed(kom_speed).ljust(10 + 14)}"
 end
