@@ -2,12 +2,14 @@ GEM
   remote: https://rubygems.org/
   specs:
     colorize (0.8.1)
+    descriptive_statistics (2.5.1)
     httmultiparty (0.3.16)
       httparty (>= 0.7.3)
       mimemagic
       multipart-post
     httparty (0.15.6)
       multi_xml (>= 0.5.2)
+    matrix_extensions (0.0.5)
     mimemagic (0.3.2)
     multi_json (1.12.2)
     multi_xml (0.6.0)
@@ -15,6 +17,9 @@ GEM
     strava-api-v3 (0.7.0)
       httmultiparty
       multi_json
+    supervised_learning (0.0.3)
+      descriptive_statistics
+      matrix_extensions
 
 PLATFORMS
   ruby
@@ -22,6 +27,7 @@ PLATFORMS
 DEPENDENCIES
   colorize
   strava-api-v3
+  supervised_learning
 
 BUNDLED WITH
    1.13.7
