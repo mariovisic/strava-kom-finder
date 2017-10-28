@@ -26,9 +26,9 @@ def colorize_grade(grade)
   color = case grade
   when (-Float::INFINITY..-0.01)
     :green
-  when (0..2)
+  when (0..2.5)
     :blue
-  when (2..3)
+  when (2.5..4)
     :yellow
   else
     :red
@@ -57,7 +57,6 @@ end
 
 puts "#{'Name'.ljust(30)} | #{'Distance'.ljust(10)} | #{'Grade'.ljust(10)} | #{'Your Speed'.ljust(10)} | #{'KOM Speed'.ljust(10)}"
 puts "-" * 120
-
 
 full_activity['segment_efforts'].each do |segment_effort|
   segment_elapsed_time = segment_effort['elapsed_time']
