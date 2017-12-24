@@ -1,1 +1,6 @@
-<a href="https://www.strava.com/oauth/authorize?client_id=<%= strava_client_id %>&response_type=code&redirect_uri=<%= strava_redirect_uri %>">Login via Strava</a>
+<% if logged_in? %>
+  Logged in as: <%= "#{current_user[:full_name]} (#{current_user[:username]})"%>
+  <a href="/logout">Logout</a>
+<% else %>
+  <a href="https://www.strava.com/oauth/authorize?client_id=<%= strava_client_id %>&response_type=code&redirect_uri=<%= strava_redirect_uri %>">Login via Strava</a>
+<% end %>

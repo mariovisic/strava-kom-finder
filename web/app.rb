@@ -18,6 +18,16 @@ enable :sessions
 
 require 'models/user_repository'
 
+helpers do
+  def current_user
+    DB[:users].where(username: session[:current_username]).first
+  end
+
+  def logged_in?
+    !!current_user
+  end
+end
+
 get '/' do
   erb :index, locals: { strava_redirect_uri: URI.join(ENV['STRAVA_REDIRECT_DOMAIN'], '/login').to_s, strava_client_id:  ENV['STRAVA_CLIENT_ID'] }
 end
@@ -31,6 +41,12 @@ get '/login' do
     user = UserRepository.create_or_update(access_token, athlete_information)
     session[:current_username] = athlete_information['username']
   end
+
+  redirect '/'
+end
+
+get '/logout' do
+  session[:current_username] = nil
 
   redirect '/'
 end
