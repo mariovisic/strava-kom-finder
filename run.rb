@@ -117,3 +117,9 @@ output_data.each do |effort|
 
     puts "#{segment_name[0,30].ljust(30)} | #{colorize_distance(segment_distance).ljust(8 + 14)} | #{colorize_grade(segment_average_grade).ljust(8 + 14)} | #{colorize_speed(your_speed).ljust(10 + 14)} | #{colorize_speed(kom_speed).ljust(10 + 14)} | #{colorize_speed(predicted_speed).ljust(10 + 14)} | #{colorize_diff_speed(kom_speed, predicted_speed).ljust(10 + 14)} "
 end
+
+
+@program = program
+require 'debug'
+true
+true
