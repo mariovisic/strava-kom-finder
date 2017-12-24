@@ -17,6 +17,7 @@ require 'config/database'
 enable :sessions
 
 require 'models/user_repository'
+require 'models/activity_repository'
 
 helpers do
   def current_user
@@ -49,4 +50,14 @@ get '/logout' do
   session[:current_username] = nil
 
   redirect '/'
+end
+
+post '/activities' do
+  puts 'here'
+  puts current_user[:access_token].inspect
+  puts params[:activity_id]
+  client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
+  activity_data = client.retrieve_an_activity(params[:activity_id])
+  activity_id = ActivityRepository.create(current_user[:id], activity_data)
+  redirect "/activities/#{activity_id}"
 end

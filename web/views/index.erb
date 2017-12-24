@@ -1,6 +1,13 @@
 <% if logged_in? %>
   Logged in as: <%= "#{current_user[:full_name]} (#{current_user[:username]})"%>
   <a href="/logout">Logout</a>
+
+  <p>Add Activities to train the system:</p>
+  <form method="POST" action="/activities">
+    <label for="activity_id">Activity id (or activity URL):</label>
+    <input type="text" name="activity_id">
+    <input type="submit" value="Add Activity">
+  </form>
 <% else %>
   <a href="https://www.strava.com/oauth/authorize?client_id=<%= strava_client_id %>&response_type=code&redirect_uri=<%= strava_redirect_uri %>">Login via Strava</a>
 <% end %>
