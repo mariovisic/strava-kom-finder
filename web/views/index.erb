@@ -8,6 +8,16 @@
     <input type="text" name="activity_id">
     <input type="submit" value="Add Activity">
   </form>
+
+
+  <% current_activities.each do |activity| %>
+    <%= JSON.parse(activity[:api_data])['name'] %>
+    <% if activity[:downloaded_segment_efforts] == activity[:segment_count] %>
+      - Downloaded
+    <% else %>
+      <a href="/activities/<%= activity[:id] %>">Download efforts</a>
+    <% end %>
+  <% end %>
 <% else %>
   <a href="https://www.strava.com/oauth/authorize?client_id=<%= strava_client_id %>&response_type=code&redirect_uri=<%= strava_redirect_uri %>">Login via Strava</a>
 <% end %>

@@ -28,10 +28,14 @@ helpers do
   def logged_in?
     !!current_user
   end
+
+  def current_activities
+    current_user && DB[:activities].where(user_id: current_user[:id])
+  end
 end
 
 get '/' do
-  erb :index, locals: { strava_redirect_uri: URI.join(ENV['STRAVA_REDIRECT_DOMAIN'], '/login').to_s, strava_client_id:  ENV['STRAVA_CLIENT_ID'] }
+  erb :index, locals: { strava_redirect_uri: URI.join(ENV['STRAVA_REDIRECT_DOMAIN'], '/login').to_s, strava_client_id:  ENV['STRAVA_CLIENT_ID'], current_activities: current_activities }
 end
 
 get '/login' do
@@ -57,7 +61,7 @@ post '/activities' do
   client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
   activity_data = client.retrieve_an_activity(params[:activity_id])
   activity_id = ActivityRepository.create(current_user[:id], activity_data)
-  redirect "/activities/#{activity_id}"
+  redirect '/'
 end
 
 get '/activities/:id' do

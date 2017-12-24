@@ -1,6 +1,7 @@
 <% if activity[:downloaded_segment_efforts] == activity[:segment_count] %>
+  All segments efforts downloaded
 <% else %>
-  <h2>Downloading segment information</h2>
+  <h2>Downloading segment efforts</h2>
 
   Downloaded: <span class="downloaded-count"><%= activity[:downloaded_segment_efforts] %></span>
   Total: <%= activity[:segment_count] %>
@@ -12,7 +13,7 @@
         return response.json()
       }).then(function(data) {
         if(data.downloaded_segment_efforts == <%= activity[:segment_count] %>) {
-          dow.location.reload(true)
+          window.location.pathname = '/'
         }
         document.querySelector('.downloaded-count').innerText = data.downloaded_segment_efforts
         downloadActivityEffort()
@@ -22,3 +23,8 @@
     downloadActivityEffort()
   </script>
 <% end %>
+
+
+<p>
+  <a href="/">Back to homepage</a>
+</p>
