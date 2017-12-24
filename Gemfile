@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'strava-api-v3'
 gem 'colorize'
 gem 'supervised_learning'
