@@ -1,8 +1,11 @@
 require 'bundler'
 Bundler.setup
 
+$LOAD_PATH.push(File.dirname(File.expand_path(__FILE__)))
+
 require 'dotenv/load'
 require 'strava/api/v3'
+require 'config/database'
 require 'sinatra'
 require 'sinatra/reloader' if development?
 
