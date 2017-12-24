@@ -18,10 +18,11 @@ enable :sessions
 
 require 'models/user_repository'
 require 'models/activity_repository'
+require 'models/segment_effort_repository'
 
 helpers do
   def current_user
-    DB[:users].where(username: session[:current_username]).first
+    !!session[:current_username] && DB[:users].where(username: session[:current_username]).first
   end
 
   def logged_in?
@@ -53,11 +54,25 @@ get '/logout' do
 end
 
 post '/activities' do
-  puts 'here'
-  puts current_user[:access_token].inspect
-  puts params[:activity_id]
   client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
   activity_data = client.retrieve_an_activity(params[:activity_id])
   activity_id = ActivityRepository.create(current_user[:id], activity_data)
   redirect "/activities/#{activity_id}"
+end
+
+get '/activities/:id' do
+  activity = DB[:activities].where(user_id: current_user[:id], id: params[:id]).first
+
+  erb :activity, locals: { activity: activity }
+end
+
+get '/activities/:id/download' do
+  activity = DB[:activities].where(user_id: current_user[:id], id: params[:id]).first
+  client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
+  segment_effort = JSON.parse(activity[:api_data])['segment_efforts'][activity[:downloaded_segment_efforts]]
+  full_segment_effort_info = client.retrieve_a_segment_effort(segment_effort['id'])
+  SegmentEffortRepository.create(activity[:id], full_segment_effort_info)
+
+  content_type :json
+  JSON.dump(DB[:activities].where(user_id: current_user[:id], id: params[:id]).first)
 end

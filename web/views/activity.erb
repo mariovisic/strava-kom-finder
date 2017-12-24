@@ -1,0 +1,24 @@
+<% if activity[:downloaded_segment_efforts] == activity[:segment_count] %>
+<% else %>
+  <h2>Downloading segment information</h2>
+
+  Downloaded: <span class="downloaded-count"><%= activity[:downloaded_segment_efforts] %></span>
+  Total: <%= activity[:segment_count] %>
+
+
+  <script>
+    downloadActivityEffort = function() {
+      fetch("/activities/<%= activity[:id] %>/download", { credentials: 'include' }).then(function(response) {
+        return response.json()
+      }).then(function(data) {
+        if(data.downloaded_segment_efforts == <%= activity[:segment_count] %>) {
+          dow.location.reload(true)
+        }
+        document.querySelector('.downloaded-count').innerText = data.downloaded_segment_efforts
+        downloadActivityEffort()
+      })
+    }
+
+    downloadActivityEffort()
+  </script>
+<% end %>
