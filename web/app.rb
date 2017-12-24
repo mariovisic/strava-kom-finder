@@ -80,3 +80,16 @@ get '/activities/:id/download' do
   content_type :json
   JSON.dump(DB[:activities].where(user_id: current_user[:id], id: params[:id]).first)
 end
+
+
+get '/map' do
+  erb :map
+end
+
+get '/segments' do
+  client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
+  segments = client.segment_explorer(bounds: params[:bounds])
+
+  content_type :json
+  JSON.dump(segments)
+end

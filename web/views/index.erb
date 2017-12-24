@@ -1,6 +1,7 @@
 <% if logged_in? %>
-  Logged in as: <%= "#{current_user[:full_name]} (#{current_user[:username]})"%>
-  <a href="/logout">Logout</a>
+  <p>Logged in as: <%= "#{current_user[:full_name]} (#{current_user[:username]})"%></p>
+  <p><a href="/map">Map</a></p>
+  <p><a href="/logout">Logout</a></p>
 
   <p>Add Activities to train the system:</p>
   <form method="POST" action="/activities">
@@ -9,13 +10,12 @@
     <input type="submit" value="Add Activity">
   </form>
 
-
   <% current_activities.each do |activity| %>
     <%= JSON.parse(activity[:api_data])['name'] %>
     <% if activity[:downloaded_segment_efforts] == activity[:segment_count] %>
       - Downloaded
     <% else %>
-      <a href="/activities/<%= activity[:id] %>">Download efforts</a>
+      - <a href="/activities/<%= activity[:id] %>">Download efforts</a>
     <% end %>
   <% end %>
 <% else %>
