@@ -89,7 +89,11 @@ end
 
 get '/segments' do
   client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
-  segments = client.segment_explorer(bounds: params[:bounds])
+  segments = client.segment_explorer(bounds: params[:bounds]).fetch('segments')
+
+  segments.each do |segment|
+    segment[:leaderboard] = client.segment_leaderboards(segment['id'])
+  end
 
   content_type :json
   JSON.dump(segments)

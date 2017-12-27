@@ -26,6 +26,15 @@ var TemplateEngine = function(html, options) {
     return new Function(code.replace(/[\r\t\n]/g, '')).apply(options);
 }
 
+function addSegment(segment, map) {
+  path = google.maps.geometry.encoding.decodePath(segment.points)
+
+    var segmentLine = new google.maps.Polyline({
+      path: path,
+      map: map
+    })
+}
+
 function initMap() {
   mapElement = document.getElementById('map')
 
@@ -47,14 +56,7 @@ function initMap() {
             return response.json()
           }).then(function(data) {
 
-            data.segments.forEach(function(segment) {
-              path = google.maps.geometry.encoding.decodePath(segment.points)
-
-                var segmentLine = new google.maps.Polyline({
-                  path: path,
-                  map: map
-                })
-            })
+            data.forEach(function(segment) { addSegment(segment, map); })
 
             console.log(data)
             window.z = data
