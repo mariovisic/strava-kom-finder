@@ -3,7 +3,7 @@ body {
    font-weight: 300;
 }
 
-h2 {
+h2, h3 {
   font-weight: 300;
   text-align: center;
   margin-top: 0;
@@ -16,8 +16,20 @@ h2 {
 #map {
   height: 80%;
   width: 100%;
+  border: 1px solid #333;
+  border-radius: 0.25em;
 }
 
 #map-sidebar {
-  width: 500px;
+  width: 32em;
+  padding: 0 1em;
+}
+
+.segment {
+  padding: 0 1em;
+  margin-bottom: 1em;
+  color: white;
+  padding: 1em;
+  border: 1px solid #333;
+  border-radius: 0.25em;
 }

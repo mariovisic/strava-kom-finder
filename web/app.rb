@@ -12,6 +12,9 @@ if development?
 end
 
 require 'strava/api/v3'
+require 'matrix'
+require 'supervised_learning'
+
 require 'config/database'
 
 enable :sessions
@@ -88,11 +91,27 @@ get '/map' do
 end
 
 get '/segments' do
+  # TODO: Refactor all this into a class :)
+  training_data = SegmentEffortRepository.find_all_for_user_id(current_user[:id]).map do |segment_effort|
+    api_data = JSON.parse(segment_effort[:api_data])
+    segment_distance = api_data['segment']['distance']
+    segment_average_grade = api_data['segment']['average_grade']
+    your_time = api_data['athlete_segment_stats']['pr_elapsed_time']
+
+    [ segment_distance, segment_average_grade, your_time ]
+  end
+
+  training_set = Matrix[*training_data]
+  program = SupervisedLearning::LinearRegression.new(training_set)
+
   client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
   segments = client.segment_explorer(bounds: params[:bounds]).fetch('segments')
 
   segments.each do |segment|
+    prediction_set = Matrix[ [segment.fetch('distance'), segment.fetch('avg_grade')] ]
+
     segment[:leaderboard] = client.segment_leaderboards(segment['id'])
+    segment[:predicted_time] = program.predict(prediction_set).round(0)
   end
 
   content_type :json
