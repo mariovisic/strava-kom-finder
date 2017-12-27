@@ -1,0 +1,22 @@
+body {
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.map-container {
+  display: flex;
+}
+
+#map {
+  height: 80%;
+  width: 100%;
+}
+
+#map-sidebar {
+  width: 500px;
+}
