@@ -58,8 +58,9 @@ get '/logout' do
 end
 
 post '/activities' do
+  activity_id = params[:activity_id].scan(/\d/).join('')
   client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
-  activity_data = client.retrieve_an_activity(params[:activity_id])
+  activity_data = client.retrieve_an_activity(activity_id)
   activity_id = ActivityRepository.create(current_user[:id], activity_data)
   redirect '/'
 end
@@ -83,7 +84,7 @@ end
 
 
 get '/map' do
-  erb :map
+  erb :map, layout: true
 end
 
 get '/segments' do

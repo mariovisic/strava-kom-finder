@@ -1,8 +1,4 @@
 <% if logged_in? %>
-  <p>Logged in as: <%= "#{current_user[:full_name]} (#{current_user[:username]})"%></p>
-  <p><a href="/map">Map</a></p>
-  <p><a href="/logout">Logout</a></p>
-
   <p>Add Activities to train the system:</p>
   <form method="POST" action="/activities">
     <label for="activity_id">Activity id (or activity URL):</label>
@@ -10,13 +6,16 @@
     <input type="submit" value="Add Activity">
   </form>
 
+  <ul>
   <% current_activities.each do |activity| %>
-    <%= JSON.parse(activity[:api_data])['name'] %>
-    <% if activity[:downloaded_segment_efforts] == activity[:segment_count] %>
-      - Downloaded
-    <% else %>
-      - <a href="/activities/<%= activity[:id] %>">Download efforts</a>
-    <% end %>
+    <li>
+      <%= JSON.parse(activity[:api_data])['name'] %>
+      <% if activity[:downloaded_segment_efforts] == activity[:segment_count] %>
+        - Downloaded
+      <% else %>
+        - <a href="/activities/<%= activity[:id] %>">Download efforts</a>
+      <% end %>
+      </li>
   <% end %>
 <% else %>
   <a href="https://www.strava.com/oauth/authorize?client_id=<%= strava_client_id %>&response_type=code&redirect_uri=<%= strava_redirect_uri %>">Login via Strava</a>
