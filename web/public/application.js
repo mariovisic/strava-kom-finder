@@ -49,6 +49,7 @@ function addSegment(segment) {
     })
 
   segmentContent = templateEngine(document.getElementById('segmentTemplate').innerHTML, {
+    id: segment.id,
     name: segment.name,
     distance: (segment.distance / 1000).toFixed(1),
     grade: segment.avg_grade,
@@ -66,6 +67,7 @@ function getSegments() {
   fetch("/segments?bounds=" + boundsString, { credentials: 'include' }).then(function(response) {
     return response.json()
   }).then(function(data) {
+    window.data = data
     data.forEach(function(segment) { addSegment(segment); })
   })
 }
