@@ -27,5 +27,6 @@ Run sequel migrations with `sequel -m web/db/migrations <DATABASE_URI>`
 - Handle situation where predicted speed is blow zero :D
 - Add ability to ignore segments
 - Return rate limiting info to the frontend and add warning messages about it.
+- When loading activity data, show a bicycle silouette greyed out and slowly give it color as the percentage of segments load :D
 - Tidy up interface
 - Add error handling :)
