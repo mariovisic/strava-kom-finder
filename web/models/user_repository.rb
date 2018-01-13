@@ -3,7 +3,6 @@ class UserRepository
     existing_users = DB[:users].where(username: data['username'])
 
     if existing_users.count > 0
-      puts "got existing user"
       existing_users.update(
         full_name: [data['firstname'], data['lastname']].join(' '),
         access_token: access_token,

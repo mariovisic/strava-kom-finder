@@ -22,6 +22,7 @@ enable :sessions
 require 'models/user_repository'
 require 'models/activity_repository'
 require 'models/segment_effort_repository'
+require 'models/segment_leaderboard_repository'
 
 helpers do
   def current_user
@@ -110,7 +111,7 @@ get '/segments' do
   segments.each do |segment|
     prediction_set = Matrix[ [segment.fetch('distance'), segment.fetch('avg_grade')] ]
 
-    segment[:leaderboard] = client.segment_leaderboards(segment['id'])
+    segment[:leaderboard] = SegmentLeaderboardRepository.fetch_or_create(client, segment['id'])
     segment[:predicted_time] = program.predict(prediction_set).round(0)
   end
 
