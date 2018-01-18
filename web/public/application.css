@@ -25,6 +25,11 @@ h2, h3 {
   padding: 0 1em;
 }
 
+#map-sidebar__segments {
+  display: flex;
+  flex-direction: column;
+}
+
 .segment {
   padding: 0 1em;
   margin-bottom: 1em;

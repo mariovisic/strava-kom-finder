@@ -36,7 +36,7 @@ function speedToHSL(estimatedTime, KOMTime) {
     out_max = 120
     current = Math.max(in_min, 1 / (estimatedTime / KOMTime) * 100)
 
-    return (current - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+    return parseInt((current - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
   }
 }
 
@@ -55,10 +55,11 @@ function addSegment(segment) {
     grade: segment.avg_grade,
     KOMSpeed: (segment.distance / 1000 / segment.leaderboard.entries[0].elapsed_time * 3600).toFixed(2),
     estimatedSpeed: (segment.distance / 1000 / segment.predicted_time * 3600).toFixed(2),
-    hsl: speedToHSL(segment.predicted_time, segment.leaderboard.entries[0].elapsed_time)
+    hsl: speedToHSL(segment.predicted_time, segment.leaderboard.entries[0].elapsed_time),
+    speedIndex: parseInt((segment.predicted_time / segment.leaderboard.entries[0].elapsed_time) * 1000)
   })
 
-  document.getElementById('map-sidebar').insertAdjacentHTML('beforeend', segmentContent)
+  document.getElementById('map-sidebar__segments').insertAdjacentHTML('beforeend', segmentContent)
 }
 
 function getSegments() {

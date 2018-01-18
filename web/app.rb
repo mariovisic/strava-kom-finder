@@ -117,6 +117,8 @@ get '/segments' do
     segment[:predicted_time] = program.predict(prediction_set).round(0)
   end
 
+  segments = segments.select { |segment| segment[:predicted_time] > 0 }
+
   content_type :json
   JSON.dump(segments)
 end
