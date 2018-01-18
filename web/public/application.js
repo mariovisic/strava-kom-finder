@@ -98,8 +98,10 @@ function initMap() {
   }
 }
 
-document.getElementById('map-sidebar__scan-button').onclick = function(e) {
-  getSegments();
+if(document.getElementById('map-sidebar__scan-button') !== null) {
+  document.getElementById('map-sidebar__scan-button').onclick = function(e) {
+    getSegments();
 
-  return false;
+    return false;
+  }
 }

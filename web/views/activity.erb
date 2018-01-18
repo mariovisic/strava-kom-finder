@@ -6,7 +6,7 @@
   Downloaded: <span class="downloaded-count"><%= activity[:downloaded_segment_efforts] %></span>
   Total: <%= activity[:segment_count] %>
 
-  <script>downloadActivityEffort("<%= activity[:id] %>", <%= activity[:segment_count] %>)</script>
+<script>window.onload = function() { downloadActivityEffort("<%= activity[:id] %>", <%= activity[:segment_count] %>) }</script>
 <% end %>
 
 
