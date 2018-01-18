@@ -17,7 +17,9 @@ Run sequel migrations with `sequel -m web/db/migrations <DATABASE_URI>`
 
 #### TODO
 
-- Speed up downloading training data
+- Add "Scan map" button to the actual map interface: https://developers.google.com/maps/documentation/javascript/examples/control-custom
+- Speed up downloading training data (currently 1 API request at a time)
+- Benchmark estimations and look into speeding up what part of it is slow
 - Add ability for users to click on paths displayed on the map to highlight the segments (maybe tooltips?)
 - Return a 403 for users who are not logged in for anything other than the homepage.
 - Add ability to get more info about trained segments
