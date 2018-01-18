@@ -87,8 +87,13 @@ function initMap() {
         }
 
         window.map.setCenter(pos)
-        getSegments()
       })
     }
   }
+}
+
+document.getElementById('map-sidebar__scan-button').onclick = function() {
+  getSegments()
+
+  return false;
 }
