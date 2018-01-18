@@ -65,13 +65,17 @@ function addSegment(segment) {
 }
 
 function getSegments() {
+  document.getElementById('map-sidebar__scan-button').innerText = "Scanning ..."
   boundsString = window.map.getBounds().toString().replace(/[\(\)]/g, '')
 
   fetch("/segments?bounds=" + boundsString, { credentials: 'include' }).then(function(response) {
     return response.json()
   }).then(function(data) {
     window.data = data
-    data.forEach(function(segment) { addSegment(segment); })
+    data.forEach(function(segment) {
+      addSegment(segment);
+      document.getElementById('map-sidebar__scan-button').innerText = "Scan Map"
+    })
   })
 }
 
@@ -94,8 +98,8 @@ function initMap() {
   }
 }
 
-document.getElementById('map-sidebar__scan-button').onclick = function() {
-  getSegments()
+document.getElementById('map-sidebar__scan-button').onclick = function(e) {
+  getSegments();
 
   return false;
 }
