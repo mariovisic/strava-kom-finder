@@ -18,6 +18,9 @@ gem 'supervised_learning'
 # Strava
 gem 'strava-api-v3'
 
+# Problems that I'm creating for myself
+gem 'concurrent-ruby'
+
 group :test do
   gem 'rspec'
 end

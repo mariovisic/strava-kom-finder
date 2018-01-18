@@ -14,15 +14,17 @@ end
 require 'strava/api/v3'
 require 'matrix'
 require 'supervised_learning'
+require 'concurrent'
 
 require 'config/database'
 
 enable :sessions
 
-require 'models/user_repository'
 require 'models/activity_repository'
+require 'models/parallel_execution'
 require 'models/segment_effort_repository'
 require 'models/segment_leaderboard_repository'
+require 'models/user_repository'
 
 helpers do
   def current_user
@@ -108,7 +110,7 @@ get '/segments' do
   client = Strava::Api::V3::Client.new(:access_token => current_user[:access_token])
   segments = client.segment_explorer(bounds: params[:bounds]).fetch('segments')
 
-  segments.each do |segment|
+  ParallelExecution.perform(segments) do |segment|
     prediction_set = Matrix[ [segment.fetch('distance'), segment.fetch('avg_grade')] ]
 
     segment[:leaderboard] = SegmentLeaderboardRepository.fetch_or_create(client, segment['id'])
