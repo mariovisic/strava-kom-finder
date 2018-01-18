@@ -69,12 +69,12 @@ function getSegments() {
   boundsString = window.map.getBounds().toString().replace(/[\(\)]/g, '')
 
   fetch("/segments?bounds=" + boundsString, { credentials: 'include' }).then(function(response) {
+    document.getElementById('map-sidebar__scan-button').innerText = "Scan Map"
     return response.json()
   }).then(function(data) {
     window.data = data
     data.forEach(function(segment) {
       addSegment(segment);
-      document.getElementById('map-sidebar__scan-button').innerText = "Scan Map"
     })
   })
 }
