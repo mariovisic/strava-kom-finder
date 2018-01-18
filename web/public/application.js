@@ -59,7 +59,9 @@ function addSegment(segment) {
     speedIndex: parseInt((segment.predicted_time / segment.leaderboard.entries[0].elapsed_time) * 1000)
   })
 
-  document.getElementById('map-sidebar__segments').insertAdjacentHTML('beforeend', segmentContent)
+  if (document.querySelector('[data-segment-strava-id="' + segment.id + '"]') === null) {
+    document.getElementById('map-sidebar__segments').insertAdjacentHTML('beforeend', segmentContent)
+  }
 }
 
 function getSegments() {

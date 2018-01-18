@@ -10,7 +10,7 @@
 </div>
 
 <script type="text/template" id="segmentTemplate">
-  <div class="segment" style="background: hsl({ this.hsl }, 100%, 33%); order: { this.speedIndex }" data-speed-index="{ this.speedIndex }">
+  <div class="segment" style="background: hsl({ this.hsl }, 100%, 33%); order: { this.speedIndex }" data-speed-index="{ this.speedIndex }" data-segment-strava-id="{ this.id }">
     <h3 class="segment__name"><a href="https://www.strava.com/segments/{ this.id }">{ this.name } <wbr> ( { this.distance }km at { this.grade }% )</a></h3>
     <div class="segment__kom_speed">KOM Speed: { this.KOMSpeed }km/h</div>
     <div class="segment__estimated_speed">Your Estimated Speed: { this.estimatedSpeed }km/h</div>
