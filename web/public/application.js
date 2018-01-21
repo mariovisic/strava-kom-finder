@@ -68,6 +68,14 @@ function getSegments() {
   document.getElementById('map-sidebar__scan-button').innerText = "Scanning ..."
   boundsString = window.map.getBounds().toString().replace(/[\(\)]/g, '')
 
+  new google.maps.Rectangle({
+    strokeOpacity: 0,
+    fillColor: '#006699',
+    fillOpacity: 0.1,
+    map: window.map,
+    bounds: window.map.getBounds().toJSON()
+  })
+
   fetch("/segments?bounds=" + boundsString, { credentials: 'include' }).then(function(response) {
     document.getElementById('map-sidebar__scan-button').innerText = "Scan Map"
     return response.json()
