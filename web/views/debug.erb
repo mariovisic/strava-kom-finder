@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawGradeChart);
+      google.charts.setOnLoadCallback(drawDistanceChart);
+
+      function drawGradeChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Grade');
+        data.addColumn('number', 'Actual Speed');
+        data.addColumn('number', 'Predicted Speed');
+        data.addRows(
+          <%= @grade_speed_data %>
+        );
+
+        var options = {
+          hAxis: {title: 'Grade %'},
+          vAxis: {title: 'Speed km/h'},
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('grade_chart_div'));
+        chart.draw(data, options);
+      }
+
+      function drawDistanceChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Distance');
+        data.addColumn('number', 'Actual Speed');
+        data.addColumn('number', 'Predicted Speed');
+        data.addRows(
+          <%= @distance_speed_data %>
+        );
+
+        var options = {
+          hAxis: {title: 'Distance km'},
+          vAxis: {title: 'Speed km/h'},
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('distance_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Average Mean Squared Loss: <%= @average_mean_squared_loss %></h2>
+    <div id="grade_chart_div" style="width: 700px; height: 500px; display: inline-block;"></div>
+    <div id="distance_chart_div" style="width: 700px; height: 500px; display: inline-block;"></div>
+  </body>
+</html>
