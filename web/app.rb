@@ -128,12 +128,12 @@ get '/debug' do
   machine_learning = MachineLearning.new
   machine_learning.load_training_data_for_user(current_user)
 
-  @grade_speed_data = machine_learning.training_set.map do |set|
-    [set[1], set[2].round(2), machine_learning.predict_speed(set[0], set[1])]
+  @grade_speed_data = machine_learning.training_set.map do |data_point|
+    [data_point.average_grade, data_point.speed, machine_learning.predict_speed(data_point.distance, data_point.average_grade)]
   end
 
-  @distance_speed_data = machine_learning.training_set.map do |set|
-    [(set[0] / 1000.0).round(2), set[2].round(2), machine_learning.predict_speed(set[0], set[1])]
+  @distance_speed_data = machine_learning.training_set.map do |data_point|
+    [(data_point.distance / 1000.0).round(2), data_point.speed, machine_learning.predict_speed(data_point.distance, data_point.average_grade)]
   end
 
   machine_learning.tune
@@ -141,25 +141,4 @@ get '/debug' do
   @average_mean_squared_loss = machine_learning.mean_squared_loss
 
   erb :debug
-end
-
-def training_set
-  @training_set ||= begin
-    training_data = SegmentEffortRepository.find_all_for_user_id(current_user[:id]).map do |segment_effort|
-      api_data = JSON.parse(segment_effort[:api_data])
-      segment_distance = api_data['segment']['distance']
-      segment_average_grade = api_data['segment']['average_grade']
-      your_time = api_data['athlete_segment_stats']['pr_elapsed_time']
-      your_speed = (segment_distance / your_time) * 3.6
-
-      [ segment_distance, segment_average_grade, your_speed ]
-    end
-
-    training_set = Matrix[*training_data]
-  end
-end
-
-def predict_speed(distance, average_grade)
-  program = SupervisedLearning::LinearRegression.new(training_set)
-  program.predict(Matrix[[distance, average_grade]]).round(2)
 end
