@@ -127,6 +127,7 @@ end
 get '/debug' do
   machine_learning = MachineLearning.new
   machine_learning.load_training_data_for_user(current_user)
+  machine_learning.tune
 
   @grade_speed_data = machine_learning.training_set.map do |data_point|
     [data_point.average_grade, data_point.speed, machine_learning.predict_speed(data_point.distance, data_point.average_grade)]
@@ -135,8 +136,6 @@ get '/debug' do
   @distance_speed_data = machine_learning.training_set.map do |data_point|
     [(data_point.distance / 1000.0).round(2), data_point.speed, machine_learning.predict_speed(data_point.distance, data_point.average_grade)]
   end
-
-  machine_learning.tune
 
   @average_mean_squared_loss = machine_learning.mean_squared_loss
 

@@ -5,16 +5,13 @@ class MachineLearning
   def initialize
     @training_set = []
     @learnt_values = {
-      a: -0.2,
-      b: 14,
-      c: 10,
-      d: 60,
-      e: 30,
-      f: 1.25,
-      g: 2,
-      h: 1,
-      i: 1.2,
-      j: 0
+      grade_log_multiplier: -0.2,
+      grade_log_offset: 14,
+      grade_log_base: 10,
+      grade_linear_multiplier: 1.25,
+      distance_log_numerator: 1,
+      distance_log_base: 500,
+      offset: 0
     }
   end
 
@@ -38,8 +35,8 @@ class MachineLearning
   end
 
   def tune
-    iterations = 2_500
-    change_values = [5, 1, 0.1, 0.01, 0.001, 0.0001]
+    iterations = 1_000
+    change_values = [1, 0.1, 0.01, 0.001]
 
     iterations.times do |i|
       current_loss = mean_squared_loss
@@ -55,12 +52,8 @@ class MachineLearning
   end
 
   def predict_speed(distance, average_grade, learnt_values = @learnt_values)
-    # FIXME: Currently we're minusing the distance as a modifier, it would better to multiply it I think
-    # but I was having troubles getting it into a 0-1 range
-    (((((Math.log((average_grade * learnt_values[:a]) + learnt_values[:b],
-              learnt_values[:c]) * learnt_values[:d]) - learnt_values[:e] -
-    (learnt_values[:f] * average_grade)) - (Math.log(distance + 1, learnt_values[:g]) * learnt_values[:h]))) * \
-    learnt_values[:i]) + learnt_values[:j]
+    (Math.log((average_grade * learnt_values[:grade_log_multiplier]) + learnt_values[:grade_log_offset], learnt_values[:grade_log_base]) -
+    (learnt_values[:grade_linear_multiplier] * average_grade)) * (learnt_values[:distance_log_numerator] / Math.log(distance, learnt_values[:distance_log_base])) + learnt_values[:offset]
   rescue Math::DomainError
     Float::MAX
   end
@@ -78,8 +71,7 @@ class MachineLearning
   def test_value_change(starting_loss, key, change)
     test_values = @learnt_values.dup
     test_values[key] += change
-    new_loss = mean_squared_loss(test_values) 
-
+    new_loss = mean_squared_loss(test_values)
 
     if new_loss < starting_loss
       puts "tweaked :#{key} accepting #{change} change with new loss: #{new_loss.round(2)}"
